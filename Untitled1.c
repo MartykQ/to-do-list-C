@@ -65,7 +65,6 @@ int main()
 
 
         FILE *plik2=fopen("zadania.txt", "r");
-
         while(feof(plik2)==0&&(i<dlugosc))
         {
         fscanf(plik2, "%d", &tab_year[i]);
@@ -179,6 +178,7 @@ int main()
                     printf("*****************\n");
                     printf("*****ZADANIA*****\n");
                     printf("*****************\n\n\n");
+
                     for(i=0;i<w_dlugosc;i++)
                     {
                         printf("*****************");
@@ -212,10 +212,63 @@ int main()
                            printf("Podaj date wykonania: ");
                            printf("\nROK: ");
                            scanf("%d", &zadanie[i].rok);
+                            blad_miesiac:
                            printf("\nMIESIAC: ");
                            scanf("%d", &zadanie[i].miesiac);
-                           printf("\nDZIEN: ");
-                           scanf("%d", &zadanie[i].dzien);
+
+                           if(zadanie[i].miesiac==1 || zadanie[i].miesiac==3 || zadanie[i].miesiac==5 || zadanie[i].miesiac==7 || zadanie[i].miesiac==8 || zadanie[i].miesiac==10 || zadanie[i].miesiac==12)
+                           {
+	                           	printf("\nDZIEN: ");
+	                           	blad_dzien1:
+	                           	if(zadanie[i].dzien>31)
+	                           	{
+	                           		printf("Miesiac ma mniej dni. Podaj ponownie dzien.");
+	                           		goto blad_dzien1;
+								}
+								scanf("%d", &zadanie[i].dzien);
+						   }
+
+							else if(zadanie[i].miesiac==4 || zadanie[i].miesiac==6 || zadanie[i].miesiac==9 || zadanie[i].miesiac==11)
+                           {
+	                           	printf("\nDZIEN: ");
+	                           	blad_dzien2:
+	                           	if(zadanie[i].dzien>30)
+	                        	{
+
+	                           		printf("Miesiac ma mniej dni. Podaj ponownie dzien.");
+	                           		goto blad_dzien2;
+								}
+								scanf("%d", &zadanie[i].dzien);
+						   }
+
+						   else if(zadanie[i].miesiac==2)
+                           {
+	                           	printf("\nDZIEN: ");
+	                           	blad_dzien3:
+	                           	scanf("%d", &zadanie[i].dzien);
+	                            if(zadanie[i].rok%4==0 && zadanie[i].rok%100!=0)
+	                            {
+		                           	if(zadanie[i].dzien>29)
+		                           	{
+		                           		printf("Miesiac ma mniej dni. Podaj ponownie dzien.");
+		                           		goto blad_dzien3;
+									}
+								}
+								else
+								{
+		                           	if(zadanie[i].dzien>28)
+		                           	{
+		                           		printf("Miesiac ma mniej dni. Podaj ponownie dzien.");
+		                           		goto blad_dzien3;
+									}
+								}
+						   }
+						   else
+						   {
+						   	printf("Nie ma takiego miesiaca. Podaj go ponownie.");
+						   	goto blad_miesiac;
+						   }
+
                            printf("\n\nDODANO!\n\nChcesz podawac dalej?");
                            scanf("%s", &pom);
 
@@ -280,6 +333,28 @@ int main()
 
                     }
 
+
+                void sortuj()
+            	{
+            		wypisz_niezrobione();
+            		int zamiana;
+                    do
+                    {
+					zamiana=0;
+                    for(i=0;i<w_dlugosc;i++)
+                    {
+                    	if(zadanie[i].priorytet<zadanie[i+1].priorytet)
+                    	{
+                    		zamiana++;
+                    		schow_z=zadanie[i];
+                    		zadanie[i]=zadanie[i+1];
+                    		zadanie[i+1]=schow_z;
+						}
+					}
+					}
+					while(zamiana!=0);
+					printf("Sortowanie");
+				}
 
                 void zapisz()
                     {
@@ -350,9 +425,14 @@ while(1)
             if(x==1)
             {
                 wypisz_niezrobione();
-                printf("\n1. Powrot");
+                printf("\n1. Powrot \n2.Sortuj po priorytecie");
                 scanf("%d", &y);
                 if(y==1) continue;
+                if(y==2) {
+                        sortuj();
+                        wypisz_niezrobione();
+                        scanf("%d", &y);
+                }
 
             }
 
@@ -381,6 +461,7 @@ while(1)
                 if(y==1) continue;
 
             }
+
 
 }
 
