@@ -191,6 +191,8 @@ int main()
 
                 }
 
+
+
             void dodaj_zadanie()
             {
                 int i,j;
@@ -212,7 +214,7 @@ int main()
                            printf("Podaj date wykonania: ");
                            printf("\nROK: ");
                            scanf("%d", &zadanie[i].rok);
-                            blad_miesiac:
+                           blad_miesiac:
                            printf("\nMIESIAC: ");
                            scanf("%d", &zadanie[i].miesiac);
 
@@ -334,27 +336,159 @@ int main()
                     }
 
 
-                void sortuj()
+                void sortuj_priorytety()
             	{
-            		wypisz_niezrobione();
             		int zamiana;
                     do
                     {
-					zamiana=0;
-                    for(i=0;i<w_dlugosc;i++)
-                    {
-                    	if(zadanie[i].priorytet<zadanie[i+1].priorytet)
-                    	{
-                    		zamiana++;
-                    		schow_z=zadanie[i];
-                    		zadanie[i]=zadanie[i+1];
-                    		zadanie[i+1]=schow_z;
+						zamiana=0;
+	                    for(i=0;i<dlugosc;i++)
+	                    {
+	                    	if(zadanie[i].priorytet<zadanie[i+1].priorytet)
+	                    	{
+	                    		zamiana++;
+	                    		schow_z=zadanie[i];
+	                    		zadanie[i]=zadanie[i+1];
+	                    		zadanie[i+1]=schow_z;
+							}
+
+							else if(zadanie[i].priorytet==zadanie[i+1].priorytet)
+							{
+								if(zadanie[i].rok>zadanie[i+1].rok)
+								{
+									zamiana++;
+		                    		schow_z=zadanie[i];
+		                    		zadanie[i]=zadanie[i+1];
+		                    		zadanie[i+1]=schow_z;
+								}
+
+								else if(zadanie[i].rok==zadanie[i+1].rok)
+								{
+									if(zadanie[i].miesiac>zadanie[i+1].miesiac)
+									{
+										zamiana++;
+			                    		schow_z=zadanie[i];
+			                    		zadanie[i]=zadanie[i+1];
+			                    		zadanie[i+1]=schow_z;
+									}
+
+									else if(zadanie[i].miesiac==zadanie[i+1].miesiac)
+									{
+										if(zadanie[i].dzien>zadanie[i+1].dzien)
+										{
+										zamiana++;
+			                    		schow_z=zadanie[i];
+			                    		zadanie[i]=zadanie[i+1];
+			                    		zadanie[i+1]=schow_z;
+										}
+									}
+								}
+
+							}
 						}
 					}
+					while(zamiana!=0);
+				}
+
+
+            void sortuj_data()
+                    {
+
+              		int zamiana;
+                    do
+                    {
+						zamiana=0;
+	                    for(i=0;i<dlugosc-1;i++)
+	                    {
+
+								if(zadanie[i].rok>zadanie[i+1].rok)
+								{
+									zamiana++;
+		                    		schow_z=zadanie[i];
+		                    		zadanie[i]=zadanie[i+1];
+		                    		zadanie[i+1]=schow_z;
+								}
+
+								else if(zadanie[i].rok==zadanie[i+1].rok)
+								{
+									if(zadanie[i].miesiac>zadanie[i+1].miesiac)
+									{
+										zamiana++;
+			                    		schow_z=zadanie[i];
+			                    		zadanie[i]=zadanie[i+1];
+			                    		zadanie[i+1]=schow_z;
+									}
+
+									else if(zadanie[i].miesiac==zadanie[i+1].miesiac)
+									{
+										if(zadanie[i].dzien>zadanie[i+1].dzien)
+										{
+										zamiana++;
+			                    		schow_z=zadanie[i];
+			                    		zadanie[i]=zadanie[i+1];
+			                    		zadanie[i+1]=schow_z;
+										}
+									}
+								}
+
+
+						}
 					}
 					while(zamiana!=0);
-					printf("Sortowanie");
-				}
+
+
+
+                }
+
+            void sortuj_data_wykonane()
+                    {
+
+              		int zamiana;
+                    do
+                    {
+						zamiana=0;
+	                    for(i=0;i<w_dlugosc-1;i++)
+	                    {
+
+								if(wykonane[i].w_rok>wykonane[i+1].w_rok)
+								{
+									zamiana++;
+		                    		schow_w=wykonane[i];
+		                    		wykonane[i]=wykonane[i+1];
+		                    		wykonane[i+1]=schow_w;
+								}
+
+								else if(wykonane[i].w_rok==wykonane[i+1].w_rok)
+								{
+									if(wykonane[i].w_miesiac>wykonane[i+1].w_miesiac)
+									{
+                                        zamiana++;
+                                        schow_w=wykonane[i];
+                                        wykonane[i]=wykonane[i+1];
+                                        wykonane[i+1]=schow_w;
+									}
+
+									else if(wykonane[i].w_miesiac==wykonane[i+1].w_miesiac)
+									{
+										if(wykonane[i].w_dzien>wykonane[i+1].w_dzien)
+										{
+                                            zamiana++;
+                                            schow_w=wykonane[i];
+                                            wykonane[i]=wykonane[i+1];
+                                            wykonane[i+1]=schow_w;
+										}
+									}
+								}
+
+
+						}
+					}
+					while(zamiana!=0);
+
+
+
+                }
+
 
                 void zapisz()
                     {
@@ -397,6 +531,9 @@ int main()
                     }
 
 
+
+
+
         /*--------------------------
           --------------------------
           ----------MENU------------
@@ -425,13 +562,19 @@ while(1)
             if(x==1)
             {
                 wypisz_niezrobione();
-                printf("\n1. Powrot \n2.Sortuj po priorytecie");
+                printf("\n1. Powrot \n2.Sortuj po priorytecie \n3.Sortuj po dacie");
                 scanf("%d", &y);
                 if(y==1) continue;
                 if(y==2) {
-                        sortuj();
+                        sortuj_priorytety();
                         wypisz_niezrobione();
                         scanf("%d", &y);
+                }
+
+                if (y==3)   {
+                    sortuj_data();
+                    wypisz_niezrobione();
+                    scanf("%d", &y);
                 }
 
             }
@@ -456,9 +599,12 @@ while(1)
             if(x==5)
             {
                 wypisz_zrobione();
-                printf("\n1. Powrot");
+                printf("\n1. Powrot\n2.Sortuj po dacie");
                 scanf("%d", &y);
                 if(y==1) continue;
+                if (y==2) {sortuj_data_wykonane();
+                wypisz_zrobione();
+                scanf("%d", &y);}
 
             }
 
