@@ -3,6 +3,7 @@
 #include <math.h>
 #include <time.h>
 #include <string.h>
+#include <ctype.h>
 #define n 120 //max liczba zadan
 #define m 100 //liczba znakow tresci zadan
 
@@ -159,14 +160,15 @@ int main()
             {
                 system("cls");
                 int i=0;
-                printf("ZADANIA: ");
+                printf("ZADANIA: \n");
                 for(i=0;i<dlugosc;i++)
                 {
-                    printf("***Zadanie nr: %d***", i);
-                    printf("\nTresc: %s", zadanie[i].tresc);
-                    printf("\nPRIORYTET: %d", zadanie[i].priorytet);
-                    printf("\nKoniec zadania: %d-%02d-%02d", zadanie[i].rok, zadanie[i].miesiac, zadanie[i].dzien);
-                    printf("\n********************\n\n");
+                        printf("*****************");
+                        printf("\nZadanie nr: %d\n", i+1);
+                        printf("TRESC: %s", zadanie[i].tresc);
+                        printf("PRIORYTET: %d\n", zadanie[i].priorytet);
+                        printf("DEADLINE: %02d-%02d-%d\n", zadanie[i].dzien, zadanie[i].miesiac, zadanie[i].rok);
+                        printf("*****************\n\n");
 
                 }
 
@@ -186,7 +188,7 @@ int main()
                         printf("TRESC: %s", wykonane[i].w_tresc);
                         printf("PRIORYTET: %d\n", wykonane[i].w_priorytet);
                         printf("DEADLINE: %02d-%02d-%d\n", wykonane[i].w_dzien, wykonane[i].w_miesiac, wykonane[i].w_rok);
-                        printf("*****************\n\n\n");
+                        printf("*****************\n\n");
                     }
 
                 }
@@ -271,7 +273,7 @@ int main()
 						   	goto blad_miesiac;
 						   }
 
-                           printf("\n\nDODANO!\n\nChcesz podawac dalej?");
+                           printf("\n\nDODANO!\n\nChcesz podawac dalej?(T/N)");
                            scanf("%s", &pom);
 
 
@@ -316,6 +318,7 @@ int main()
                     printf("\n\nKtory element chcesz usunac?");
                     int help;
                     scanf("%d", &help);
+                    help=help-1;
                     if((help<dlugosc)&&(help>=0))
                     {
                         dlugosc=dlugosc-1;
@@ -329,11 +332,15 @@ int main()
 
                     }
                     else  {
-                            printf("\nPodales zly numer pajacu");
-                            goto usunac;
+                            printf("\nPodales zly numer\nJeszcze Raz\n");
+                            system("pause");
+                            usun_zadanie();
                               }
 
                     }
+
+
+
 
 
                 void sortuj_priorytety()
@@ -531,6 +538,109 @@ int main()
                     }
 
 
+                    void edytuj_zadanie()
+                        {
+                            int i;
+                            char pom;
+                            system("cls");
+                            wypisz_niezrobione();
+
+                            printf("\n\n**********************\nKtore zadanie chcesz edytowac? ");
+                            scanf("%d", &i);
+                            i=i-1;
+
+                            if((i>dlugosc)||(i<0))
+                                {
+                                    printf("\nNie ma takiego numeru!");
+                                    system("pause");
+                                    edytuj_zadanie();
+                                }
+                            printf("\nCzy chcesz edytowac tresc?(T/N)");
+                            scanf("%s", &pom);
+                            if(tolower(pom)=='t')
+                                {
+                                    fflush(stdin);
+                                    printf("\nPodaj tresc zadania: ");
+                                    gets(zadanie[i].tresc);
+                                    strcat(zadanie[i].tresc,"\n");
+                                }
+                            printf("Czy chcesz zmienic priorytet?(T/N)");
+                            scanf("%s", &pom);
+                            if(tolower(pom)=='t')
+                            {
+                                printf("\nPodaj nowy priorytet: ");
+                                scanf("%d", &zadanie[i].priorytet);
+                            }
+                            printf("\nCzy chcesz zmienic date zadania?(T/N)");
+                            scanf("%s", &pom);
+                            if(tolower(pom)=='t')
+                            {
+                                printf("\nPodaj rok: ");
+                                scanf("%d", &zadanie[i].rok);
+                                printf("\nPodaj miesiac: ");
+                                scanf("%d", &zadanie[i].miesiac);
+                                printf("\nPodaj dzien: ");
+                                scanf("%d", &zadanie[i].dzien);
+                            }
+
+
+                            printf("\n*************\nEdytowano pomyslnie!");
+                            system("pause");
+
+                        }
+
+                    void edytuj_wykonane()
+                        {
+                            int i;
+                            char pom;
+                            system("cls");
+                            wypisz_zrobione();
+
+                            printf("\n\n**********************\nKtore zadanie chcesz edytowac? ");
+                            scanf("%d", &i);
+                            i=i-1;
+
+                            if((i>w_dlugosc)||(i<0))
+                                {
+                                    printf("\nNie ma takiego numeru!");
+                                    system("pause");
+                                    edytuj_wykonane();
+                                }
+                            printf("\nCzy chcesz edytowac tresc?(T/N)");
+                            scanf("%s", &pom);
+                            if(tolower(pom)=='t')
+                                {
+                                    fflush(stdin);
+                                    printf("\nPodaj tresc zadania: ");
+                                    gets(wykonane[i].w_tresc);
+                                    strcat(wykonane[i].w_tresc,"\n");
+                                }
+                            printf("Czy chcesz zmienic priorytet?(T/N)");
+                            scanf("%s", &pom);
+                            if(tolower(pom)=='t')
+                            {
+                                printf("\nPodaj nowy priorytet: ");
+                                scanf("%d", &wykonane[i].w_priorytet);
+                            }
+                            printf("\nCzy chcesz zmienic date zadania?(T/N)");
+                            scanf("%s", &pom);
+                            if(tolower(pom)=='t')
+                            {
+                                printf("\nPodaj rok: ");
+                                scanf("%d", &wykonane[i].w_rok);
+                                printf("\nPodaj miesiac: ");
+                                scanf("%d", &wykonane[i].w_miesiac);
+                                printf("\nPodaj dzien: ");
+                                scanf("%d", &wykonane[i].w_dzien);
+                            }
+
+
+                            printf("\n*************\nEdytowano pomyslnie!");
+                            system("pause");
+
+                        }
+
+
 
 
 
@@ -549,67 +659,131 @@ while(1)
     printf("\n********MENU********");
     printf("\n********************");
     printf("\n********************\n\n");
-    printf("1.Pokaz zadania\n");
-    printf("2.Usun zadania");
-    printf("\n3.Dodaj zadania");
-    printf("\n4.Zapisz zadania");
-    printf("\n5.Pokaz wykonane zadania");
-    printf("\n\nCo chcesz?");
+    printf("1.ZADANIA DO ZROBIENIA\n");
+    printf("2.ARCHIWUM");
+    printf("\n3.ZAPISZ");
+    printf("\n\nWYBIERZ: ");
     scanf("%d", &x);
     printf("/n");
 
 
             if(x==1)
             {
+                ZADANIA:
+                printf("ZADANIA DO ZROBIENIA\n\n");
                 wypisz_niezrobione();
-                printf("\n1. Powrot \n2.Sortuj po priorytecie \n3.Sortuj po dacie");
+                printf("\n1. SORTUJ PO DACIE");
+                printf("\n2. SORTUJ PO PRIORYTECIE");
+                printf("\n3. DODAJ NOWE ZADANIE");
+                printf("\n4. USUN ZADANIE");
+                printf("\n5. EDYTUJ ZADANIE");
+                printf("\n6. ZMIEN NA WYKONANE");
+                printf("\n7. POWROT");
+                printf("\n\nWYBIERZ: ");
                 scanf("%d", &y);
-                if(y==1) continue;
+
+
+
+                if(y==1)
+                {
+                    sortuj_data();
+                    printf("UDALO SIE!\n");
+                    system("pause");
+                    goto ZADANIA;
+                }
                 if(y==2) {
                         sortuj_priorytety();
-                        wypisz_niezrobione();
-                        scanf("%d", &y);
+                        printf("\nUDALO SIE! \n");
+                        system("pause");
+                        goto ZADANIA;
                 }
 
                 if (y==3)   {
-                    sortuj_data();
-                    wypisz_niezrobione();
-                    scanf("%d", &y);
+                        dodaj_zadanie();
+                        goto ZADANIA;
+                }
+
+                if(y==4)
+                {
+                    usun_zadanie();
+                    goto ZADANIA;
+                }
+
+                if(y==5)
+                {
+                    edytuj_zadanie();
+                    goto ZADANIA;
+                }
+
+                if(y==6)
+                {
+                    //brak funkcji na zamiane
                 }
 
             }
 
+
+
             if(x==2)
             {
-                usun_zadanie();
-            }
-
-            if(x==3)
-            {
-                dodaj_zadanie();
-            }
-
-
-            if(x==4)
-            {
-                zapisz();
-                zapisz_wykonane();
-            }
-
-            if(x==5)
-            {
+                ARCHIWUM:
                 wypisz_zrobione();
-                printf("\n1. Powrot\n2.Sortuj po dacie");
+                printf("\n1. SORTUJ PO DACIE");
+                printf("\n2. SORTUJ PO PRIORYTECIE");
+                printf("\n3. DODAJ ZADANIE DO ARCHIWUM");
+                printf("\n4. USUN ZADANIE");
+                printf("\n5. EDYTUJ ZADANIE");
+                printf("\n6. ZMIEN STATUS NA DO ZROBIENIA");
+                printf("\n7. POWROT");
+                printf("\n\nWYBIERZ: ");
                 scanf("%d", &y);
-                if(y==1) continue;
-                if (y==2) {sortuj_data_wykonane();
-                wypisz_zrobione();
-                scanf("%d", &y);}
 
+                if(y==1)
+                {
+                    sortuj_data_wykonane();
+                    printf("\nUDALO SIE! \n");
+                    system("pause");
+                    goto ARCHIWUM;
+
+                }
+                if (y==2)
+                {
+        // BRAAAAAAAK
+                    wypisz_zrobione();
+                    scanf("%d", &y);
+                }
+
+                if(y==3)
+                {
+                    dodaj_wykonane();
+                    printf("\nUDALO SIE!\n");
+                    system("pause");
+                    goto ARCHIWUM;
+                }
+
+                if(y==4)
+                {
+                    //BRAAAAK FUNKCJI NA USUWANIE WYKONANYCH
+                }
+
+                if(y==5)
+                {
+                    //BRAK FUNKCJI NA EDYTOWANIE WYKONANYCH
+                }
+
+                if(y==6)
+                {
+                    //BRAK FUNKCJI ZMIENIAJACEJ STATUS
+                }
+
+                if(y==7) continue;
             }
 
 
-}
+        if(x==3) {
+                zapisz;
+                zapisz_wykonane;
+                }
 
     return 0;
 
